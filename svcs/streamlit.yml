@@ -1,0 +1,15 @@
+name: streamlit_app
+restart: true
+owner: apb
+#hostname: apbs-MBP.apb.homelab.com
+hostname: apbs-MacBook-Pro.local
+port: 8501
+command:
+  - /Users/apb/workspaces/github.com/alexander-bergeron/go-systemdelux/test/streamlit/st_env/bin/python
+  - /Users/apb/workspaces/github.com/alexander-bergeron/go-systemdelux/test/streamlit/st_env/bin/streamlit
+  - run
+  - /Users/apb/workspaces/github.com/alexander-bergeron/go-systemdelux/test/streamlit/app.py
+environment:
+  TEST_VAR: test
+flags: null
+log: /Users/apb/workspaces/github.com/alexander-bergeron/go-systemdelux/logs/streamlit_app.log
