@@ -13,15 +13,18 @@ import (
 )
 
 type Service struct {
-	Name        string            `yaml:"name"`
-	Restart     bool              `yaml:"restart"`
-	Owner       string            `yaml:"owner"`
-	Hostname    string            `yaml:"hostname"`
-	Port        int               `yaml:"port"`
-	Command     []string          `yaml:"command"`
-	Environment map[string]string `yaml:"environment"`
-	Flags       map[string]string `yaml:"flags"`
-	Log         string            `yaml:"log"`
+	Name        string            `yaml:"name" json:"name"`
+	Restart     bool              `yaml:"restart" json:"restart"`
+	Owner       string            `yaml:"owner" json:"owner"`
+	Hostname    string            `yaml:"hostname" json:"hostname"`
+	Port        int               `yaml:"port" json:"port"`
+	Command     []string          `yaml:"command" json:"command"`
+	Environment map[string]string `yaml:"environment" json:"environment"`
+	Flags       map[string]string `yaml:"flags" json:"flags"`
+	Startup     string            `yaml:"startup" json:"startup"`
+	Shutdown    string            `yaml:"shutdown" json:"shutdown"`
+	Healthcheck string            `yaml:"healthcheck" json:"healthcheck"`
+	Log         string            `yaml:"log" json:"log"`
 }
 
 type Monitor struct {
@@ -40,7 +43,7 @@ func (m *Monitor) LoadFromDirectory(dirPath string) {
 
 	files, err := os.ReadDir(dirPath)
 	if err != nil {
-		fmt.Errorf("Failed to read directory: %v", err)
+		fmt.Printf("Failed to read directory: %v", err)
 	}
 
 	for _, file := range files {
@@ -49,14 +52,14 @@ func (m *Monitor) LoadFromDirectory(dirPath string) {
 
 			data, err := os.ReadFile(filePath)
 			if err != nil {
-				fmt.Errorf("Failed to read file %s: %v", filePath, err)
+				fmt.Printf("Failed to read file %s: %v", filePath, err)
 				continue
 			}
 
 			var svc Service
 			err = yaml.Unmarshal(data, &svc)
 			if err != nil {
-				fmt.Errorf("Failed to unmarshal YAML file %s: %v", filePath, err)
+				fmt.Printf("Failed to unmarshal YAML file %s: %v", filePath, err)
 				continue
 			}
 

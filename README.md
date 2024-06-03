@@ -24,3 +24,8 @@ A lightweight golang program to start, stop, and monitor processes. This is simi
 
 6. Inspect a service
 
+## Long Term
+
+- Make it distributed
+
+- Something with handling different backends - filesystem, db, various db engines

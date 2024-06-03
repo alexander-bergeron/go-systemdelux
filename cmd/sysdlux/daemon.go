@@ -1,4 +1,4 @@
-package main
+package sysdlux
 
 import (
 	"flag"
@@ -14,13 +14,26 @@ import (
 // Health check interval in minutes
 const healthCheckInterval = 1
 
-const svcPath = "/Users/apb/workspaces/github.com/alexander-bergeron/go-systemdelux/svcs/"
+// const svcPath = "/Users/apb/workspaces/github.com/alexander-bergeron/go-systemdelux/svcs/"
 
-func main() {
-	for {
-		fmt.Println("Running Health Check.")
+func DaemonCommand(args []string) {
+	fs := flag.NewFlagSet("daemon", flag.ExitOnError)
+	detached := fs.Bool("detached", false, "Run in detached mode")
+	detachedShort := fs.Bool("d", false, "Run in detached mode (short flag)")
+
+	fs.Parse(args)
+
+	if *detached || *detachedShort {
+		// runDetached("sleep", args)
+		fmt.Println("detached flag.")
+		return
+	} else {
 		runOnce()
-		time.Sleep(1 * time.Minute)
+		// for {
+		// 	fmt.Println("Running Health Check.")
+		// 	runOnce()
+		// 	time.Sleep(1 * time.Minute)
+		// }
 	}
 }
 
@@ -73,6 +86,17 @@ func runDaemon() {
 			mon.CheckServices()
 		}
 	}
+}
+
+func runDetached(command string, args []string) {
+	cmd := exec.Command(os.Args[0], append([]string{command}, args...)...)
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+	if err := cmd.Start(); err != nil {
+		log.Fatalf("Failed to start process in detached mode: %v", err)
+	}
+	fmt.Printf("Running in detached mode with PID %d\n", cmd.Process.Pid)
+	os.Exit(0)
 }
 
 // func init() {

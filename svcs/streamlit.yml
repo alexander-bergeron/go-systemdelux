@@ -12,4 +12,7 @@ command:
 environment:
   TEST_VAR: test
 flags: null
+startup: null
+shutdown: null
+healthcheck: null
 log: /Users/apb/workspaces/github.com/alexander-bergeron/go-systemdelux/logs/streamlit_app.log
